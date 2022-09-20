@@ -1,0 +1,17 @@
+public class main {
+    public static void main(String[] args) {
+        Intervalo uno = new Intervalo(new double[]{1.23,5.63});
+        uno.mostrar();
+        uno.longuitud();
+        System.out.println(uno.comprobar(new double[]{1.24,5.63}));
+        uno.desplazar(5.43);
+        uno.unir(new double[]{3,8.7});
+        uno.unir(new double[]{2,5});
+        uno.comprobarUnion(new double[]{3,6});
+        uno.comprobarUnion(new double[]{0.5,5});
+        uno.comprobarIncluido(new double[]{2,6});
+        uno.comprobarIncluido(new double[]{1,4});
+        uno.comprobarIncluido(new double[]{2.6,4.2});
+        System.out.println(uno.comprobarNumero(4));
+    }
+}
