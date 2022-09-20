@@ -1,0 +1,103 @@
+ public class Intervalo {
+
+    private double[] intervalo;
+
+    public Intervalo(double[] intervalo){
+        if (intervalo[0] > intervalo[1]){
+            System.out.println("Este Intervalo no es válido");
+        }else {
+            this.intervalo = intervalo;
+        }
+    }
+
+    public void mostrar(){
+        System.out.println("Intervalo: "+intervalo[0]+" a "+intervalo[1]);
+    }
+
+    public void longuitud(){
+        System.out.println("Longuitud Intervalo: "+(intervalo[1]-intervalo[0]));
+    }
+
+    public boolean comprobar(double[] intervalo2){
+        if (intervalo2[0] > intervalo[1]){
+            System.out.println("Estos intervalos no se pueden comprobar");
+            return false;
+        }else{
+            return intervalo2[0]==intervalo[0] && intervalo2[1]==intervalo[1];
+        }
+    }
+
+    public void desplazar(double numero){
+        this.intervalo[0] = intervalo[0]+numero;
+        this.intervalo[1] = intervalo[1]+numero;
+        System.out.println("Se ha desplazado en "+numero+", el Intervalo cambia a --> {"+intervalo[0]+", "+intervalo[1]+"}");
+    }
+
+    public void unir(double[] intervalo2){
+        if (intervalo2[0] > intervalo2[1]){
+            System.out.println("Intervalo NO válido");
+        }else{
+            if (intervalo2[0] > intervalo[1]){
+                System.out.println("Estos intervalos no se pueden unir");
+            }else{
+                if (intervalo2[0] <= intervalo[0] && intervalo2[1] >= intervalo[1]){
+                    this.intervalo[0] = intervalo2[0];
+                    this.intervalo[1] = intervalo2[1];
+                    System.out.println("Nuevo Intervalo {"+intervalo[0]+", "+intervalo[1]+"}");
+                }else if(intervalo2[0] < intervalo[1] && intervalo2[0]>intervalo[0] && intervalo2[1] >= intervalo[1]){
+                    this.intervalo[1] = intervalo2[1];
+                    System.out.println("Nuevo Intervalo {"+intervalo[0]+", "+intervalo[1]+"}");
+                }else if(intervalo2[0] < intervalo[0]){
+                    this.intervalo[0] = intervalo2[0];
+                    System.out.println("Nuevo Intervalo {"+intervalo[0]+", "+intervalo[1]+"}");
+                }else{
+                    System.out.println("Nuevo Intervalo {"+intervalo[0]+", "+intervalo[1]+"}");
+                }
+            }
+        }
+    }
+    
+    public void comprobarUnion(double[] intervalo2){
+        if (intervalo2[0] > intervalo2[1]){
+            System.out.println("Intervalo NO válido");
+        }else{
+            if (intervalo2[0] > intervalo[1]){
+                System.out.println("Estos intervalos no tienen puntos en común");
+            }else{
+                if (intervalo2[0] <= intervalo[0] && intervalo2[1] >= intervalo[1]){
+                    System.out.println("Puntos en común {"+intervalo2[0]+", "+intervalo2[1]+"}");
+                }else if(intervalo2[0] < intervalo[1] && intervalo2[0]>intervalo[0] && intervalo2[1] >= intervalo[1]){
+                    System.out.println("Puntos en común {"+intervalo[0]+", "+intervalo2[1]+"}");
+                }else if(intervalo2[0] < intervalo[0]){
+                    System.out.println("Puntos en común {"+intervalo[0]+", "+intervalo2[1]+"}");
+                }else if(intervalo2[1] <= intervalo[1]){
+                    System.out.println("Puntos en común {"+intervalo2[0]+", "+intervalo2[1]+"}");
+                }
+            }
+        }
+    }
+
+    public boolean comprobarNumero(double numero){
+        return numero<=intervalo[1] && numero>=intervalo[0];
+    }
+
+    public void comprobarIncluido(double[] intervalo2){
+        if (intervalo2[0] > intervalo2[1]){
+            System.out.println("Intervalo NO válido");
+        }else{
+            if (intervalo2[0] > intervalo[1]){
+                System.out.println("Estos intervalos no tienen puntos en común");
+            }else{
+                if (intervalo2[0] < intervalo[0] || intervalo2[1] > intervalo[1]){
+                    System.out.println("No está incluido en el Intervalo");
+                }else if(intervalo2[0] < intervalo[1] && intervalo2[0]>intervalo[0] && intervalo2[1] <= intervalo[1]){
+                    System.out.println("Está incluido en el Intervalo");
+                }else if(intervalo2[0] >= intervalo[0] && intervalo2[1] <= intervalo[1]){
+                    System.out.println("Está incluido en el Intervalo");
+                }else{
+                    System.out.println("No está incluido en el Intervalo");
+                }
+            }
+        }
+    }
+}
