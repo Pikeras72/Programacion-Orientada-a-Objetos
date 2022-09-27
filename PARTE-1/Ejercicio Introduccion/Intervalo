@@ -1,4 +1,4 @@
- public class Intervalo {
+public class Intervalo {
 
     private double[] intervalo;
 
