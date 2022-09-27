@@ -2,7 +2,7 @@ public class main {
     public static void main(String[] args) {
         Intervalo uno = new Intervalo(new double[]{1.23,5.63});
         uno.mostrar();
-        uno.longuitud();
+        System.out.println(uno.longuitud());
         System.out.println(uno.comprobar(new double[]{1.24,5.63}));
         uno.desplazar(5.43);
         uno.unir(new double[]{3,8.7});
@@ -13,5 +13,9 @@ public class main {
         uno.comprobarIncluido(new double[]{1,4});
         uno.comprobarIncluido(new double[]{2.6,4.2});
         System.out.println(uno.comprobarNumero(4));
+        Intervalo dos = new Intervalo(new double[]{1.23,5.63});
+        dos.mostrar();
+        dos.intersectan(new double[]{0.5,4}).mostrar();
+        dos.escalarSinCambio(2).mostrar();
     }
 }
