@@ -1,168 +1,324 @@
-public class Intervalo {
+package Intervalo;
+/**
+ * Esta clase define objetos Intervalo compuestos por un extremo inferior y un extremo superior.
+ * Los extremos son valores de tipo <code>double</code>.
+ * @author POO
+ * @version 29/09/2022
+ */
+public class Intervalo implements InterfazIntervalo {
+    /**
+     * extremoInferior Extremo inferior del intervalo.
+     * extremoSuperior Extremo superior del intervalo.
+     */
+    private double extremoInferior, extremoSuperior;
+    /**
+     * Origen de las coordenadas para todos los intervalos, punto 0.0.
+     */
+    protected static final double ORIGEN = 0.0;
 
-    private double[] intervalo;
+    /**
+     * Construye un Intervalo en el origen de coordenadas [0.0, 0.0].
+     */
+    //DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD
+    public Intervalo(){
+        this(Intervalo.ORIGEN, Intervalo.ORIGEN);
+    }
 
-    public Intervalo(double[] intervalo){
-        if (intervalo[0] > intervalo[1]){
-            System.out.println("Este Intervalo no es válido");
-        }else {
-            this.intervalo = intervalo;
+    /**
+     * Construye un Intervalo con los extremos indicados ordenados de menor a mayor.
+     * @param extremoSuperior Extremo superior del intervalo.
+     * @param extremoInferior Extremo inferior del intervalo.
+     */
+    public Intervalo(double extremoInferior, double extremoSuperior) {
+        this.extremoInferior = Math.min(extremoInferior, extremoSuperior);
+        this.extremoSuperior = Math.max(extremoInferior, extremoSuperior);
+    }
+
+    /**
+     * Construye un Intervalo en función del <code>extremo</code> proporcionado: [0.0, extremo] o [extremo, 0.0].
+     * @param extremo Extremo proporcionado.
+     * @see #Intervalo(double, double)
+     */
+    public Intervalo(double extremo){
+        this(Intervalo.ORIGEN, extremo);
+    }
+
+    /**
+     * Construye un Intervalo a partir del <code>intervalo</code> proporcionado como parámetro.
+     * @param intervalo Intervalo base.
+     */
+    public Intervalo(Intervalo intervalo) {
+        this(); //DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD
+        if (intervalo != null) {
+            this.extremoInferior = intervalo.extremoInferior;
+            this.extremoSuperior = intervalo.extremoSuperior;
         }
     }
 
-    public void mostrar(){
-        System.out.println("Intervalo: "+intervalo[0]+" a "+intervalo[1]);
+    /**
+     * Recupera el extremo inferior del Intervalo base.
+     * @return Extremo inferior del Intervalo base.
+     */
+    protected double getExtremoInferior() {
+        return extremoInferior;
     }
 
-    public double longuitud(){
-        return intervalo[1]-intervalo[0];
+    /**
+     * Recupera el extremo superior del Intervalo base.
+     * @return Extremo superior del Intervalo base.
+     */
+    protected double getExtremoSuperior() {
+        return extremoSuperior;
     }
 
-    public boolean comprobar(double[] intervalo2){
-        if (intervalo2[0] > intervalo[1]){
-            System.out.println("Estos intervalos no se pueden comprobar");
-            return false;
-        }else{
-            return intervalo2[0]==intervalo[0] && intervalo2[1]==intervalo[1];
+    /**
+     * Calcula la longitud del Intervalo como la diferencia entre sus extremos.
+     * @return Longitud del Intervalo, como un valor <code>double</code>.
+     */
+    public double longitud(){
+        return this.extremoSuperior - this.extremoInferior;
+    }
+
+    /**
+     * Calcula el punto medio del Intervalo.
+     * @return Devuelve el punto medio del Intervalo, como un valor <code>double</code>.
+     */
+    public double puntoMedio(){
+        return this.extremoInferior + this.longitud()/2;
+    }
+
+    /**
+     * Indica si el Intervalo base es anterior al <code>intervalo</code> proporcionado como parámetro.<p>
+     * <b>Nota: </b>El Intervalo base se considera anterior al <code>intervalo</code> pasado por parámetro si su
+     * extremo superior es menor o igual al extremo inferior del <code>intervalo</code> pasado por parámetro.<br>
+     * @param intervalo Intervalo con el que comprobar la condición.
+     * @return <code>true</code> si el Intervalo base es anterior al dado,
+     *         <code>false</code> en caso contrario.
+     */
+    public boolean anterior(Intervalo intervalo) {
+        return this.extremoSuperior <= intervalo.extremoInferior;
+    }
+
+    /**
+     * Indica si el Intervalo base es posterior al <code>intervalo</code> proporcionado como parámetro.<p>
+     * <b>Nota: </b>El Intervalo base se considera posterior al <code>intervalo</code> pasado por parámetro si su
+     * extremo inferior es mayor o igual al extremo superior del <code>intervalo</code> pasado por parámetro.<br>
+     * @param intervalo Intervalo con el que comprobar la condición.
+     * @return <code>true</code> si el Intervalo base es posterior al dado,
+     *         <code>false</code> en caso contrario.
+     */
+    public boolean posterior(Intervalo intervalo) {
+        return this.extremoInferior >= intervalo.extremoSuperior;
+    }
+
+    /**
+     * Indica si el Intervalo base incluye al <code>punto</code> proporcionado como parámetro.
+     * @param punto Punto a comprobar.
+     * @return <code>true</code> si el Intervalo base incluye al <code>punto</code> proporcionado
+     *         como parámetro,<code>false</code> en caso contrario.
+     */
+    public boolean incluye(double punto){
+        return this.extremoInferior <= punto && punto <= this.extremoSuperior;
+    }
+
+    /**
+     * Indica si el Intervalo base incluye al <code>intervalo</code> proporcionado como parámetro.
+     * @param intervalo Intervalo con el que comprobar la condición.
+     * @return <code>true</code> si el Intervalo base incluye al <code>intervalo</code> proporcionado
+     *         como parámetro, <code>false</code> en caso contrario.
+     */
+    public boolean incluye(Intervalo intervalo) {
+        return this.incluye(intervalo.extremoInferior) &&
+                this.incluye(intervalo.extremoSuperior);
+    }
+
+    /**
+     * Indica si el Intervalo base intersecta con el <code>intervalo</code> proporcionado como parámetro.
+     * @param intervalo Intervalo con el que comprobar la condición.
+     * @return <code>true</code> si el Intervalo base intersecta con el <code>intervalo</code>
+     *         proporcionado como parámetro, <code>false</code> en caso contrario.
+     */
+    public boolean intersecta(Intervalo intervalo) {
+        return this.extremoInferior <= intervalo.extremoSuperior &&
+                this.extremoSuperior >= intervalo.extremoInferior;
+    }
+
+    /**
+     * Devuelve un Intervalo resultado de la intersección del Intervalo base
+     * con el <code>intervalo</code> pasado por parámetro.
+     * @param intervalo Intervalo con el que operar.
+     * @return Intervalo resultado de la intersección con el <code>intervalo</code> pasado
+     *         por parámetro.
+     */
+    public Intervalo interseccion(Intervalo intervalo) {
+        if(this.intersecta(intervalo)) {
+            double extremoInferior = Math.max(this.extremoInferior, intervalo.extremoInferior);
+            double extremoSuperior = Math.min(this.extremoSuperior, intervalo.extremoSuperior);
+            return new Intervalo(extremoInferior, extremoSuperior);
+        } else {
+            return null;
         }
     }
 
-    public void desplazar(double numero){
-        this.intervalo[0] = intervalo[0]+numero;
-        this.intervalo[1] = intervalo[1]+numero;
-        System.out.println("Se ha desplazado en "+numero+", el Intervalo cambia a --> {"+intervalo[0]+", "+intervalo[1]+"}");
-    }
-
-    public void unir(double[] intervalo2){
-        if (intervalo2[0] > intervalo2[1]){
-            System.out.println("Intervalo NO válido");
-        }else{
-            if (intervalo2[0] > intervalo[1]){
-                System.out.println("Estos intervalos no se pueden unir");
-            }else{
-                if (intervalo2[0] <= intervalo[0] && intervalo2[1] >= intervalo[1]){
-                    this.intervalo[0] = intervalo2[0];
-                    this.intervalo[1] = intervalo2[1];
-                    System.out.println("Nuevo Intervalo {"+intervalo[0]+", "+intervalo[1]+"}");
-                }else if(intervalo2[0] < intervalo[1] && intervalo2[0]>intervalo[0] && intervalo2[1] >= intervalo[1]){
-                    this.intervalo[1] = intervalo2[1];
-                    System.out.println("Nuevo Intervalo {"+intervalo[0]+", "+intervalo[1]+"}");
-                }else if(intervalo2[0] < intervalo[0]){
-                    this.intervalo[0] = intervalo2[0];
-                    System.out.println("Nuevo Intervalo {"+intervalo[0]+", "+intervalo[1]+"}");
-                }else{
-                    System.out.println("Nuevo Intervalo {"+intervalo[0]+", "+intervalo[1]+"}");
-                }
+    /**
+     * Devuelve un Intervalo correspondiente al espacio existente entre el Intervalo base
+     * y el <code>intervalo</code> pasado por parámetro.
+     * @param intervalo Intervalo con el que operar.
+     * @return Intervalo correspondiente al espacio existente
+     *         entre el Intervalo base y el <code>intervalo</code> pasado por parámetro.
+     */
+    public Intervalo intervaloEntre(Intervalo intervalo) {
+        if(!this.intersecta(intervalo)) {
+/*
+            if(this.anterior(intervalo)){
+                return new Intervalo(this.extremoSuperior, intervalo.extremoInferior);
+            } else {
+                return new Intervalo(intervalo.extremoSuperior, this.extremoInferior);
             }
+*/
+            double extremoInferior = Math.min(this.extremoSuperior, intervalo.extremoSuperior);
+            double extremoSuperior = Math.max(this.extremoInferior, intervalo.extremoInferior);
+            return new Intervalo(extremoInferior, extremoSuperior);
+        }
+        return null;
+    }
+
+    /**
+     * Devuelve la longitud del Intervalo correspondiente al espacio existente
+     * entre el Intervalo base y el <code>intervalo</code> pasado por parámetro.
+     * @param intervalo Intervalo con el que operar.
+     * @return Longitud del Intervalo correspondiente al espacio existente
+     *         entre el Intervalo base y el <code>intervalo</code> pasado por parámetro.
+     */
+    public double longitudEntre(Intervalo intervalo) {
+        if(!this.intersecta(intervalo)){
+            return this.intervaloEntre(intervalo).longitud();
+        }
+        return 0.0;
+    }
+
+    /**
+     * Desplaza el Intervalo base el <code>desplazamiento</code> dado.
+     * @param desplazamiento valor del <code>desplazamiento</code> a realizar.
+     */
+    public void desplazar(double desplazamiento){
+        this.extremoInferior += desplazamiento;
+        this.extremoSuperior += desplazamiento;
+    }
+
+    /**
+     * Devuelve una copia del Intervalo base desplazado el <code>desplazamiento</code> pasado por parámetro.
+     * @param desplazamiento valor del <code>desplazamiento</code> a realizar
+     * @return Intervalo desplazado el <code>desplazamiento</code> dado respecto al Intervalo base.
+     */
+    public Intervalo desplazado(double desplazamiento){
+        Intervalo desplazado = this.copia();
+        desplazado.desplazar(desplazamiento);
+        return desplazado;
+    }
+
+    /**
+     * Devuelve un Intervalo resultado de la unión del Intervalo base con el <code>intervalo</code>
+     * pasado por parámetro.
+     * @param intervalo Intervalo a unir.
+     * @return Intervalo resultado de la unión del Intervalo base con el <code>intervalo</code>
+     *         pasado por parámetro.
+     */
+    public Intervalo union(Intervalo intervalo) {
+        if(this.intersecta(intervalo)){
+            double extremoInferior = Math.min(this.extremoInferior, intervalo.extremoInferior);
+            double extremoSuperior = Math.max(this.extremoSuperior, intervalo.extremoSuperior);
+            return new Intervalo(extremoInferior, extremoSuperior);
+        } else {
+            return null;
         }
     }
 
-    public void comprobarUnion(double[] intervalo2){
-        if (intervalo2[0] > intervalo2[1]){
-            System.out.println("Intervalo NO válido");
-        }else{
-            if (intervalo2[0] > intervalo[1]){
-                System.out.println("Estos intervalos no tienen puntos en común");
-            }else{
-                if (intervalo2[0] <= intervalo[0] && intervalo2[1] >= intervalo[1]){
-                    System.out.println("Puntos en común {"+intervalo2[0]+", "+intervalo2[1]+"}");
-                }else if(intervalo2[0] < intervalo[1] && intervalo2[0]>intervalo[0] && intervalo2[1] >= intervalo[1]){
-                    System.out.println("Puntos en común {"+intervalo[0]+", "+intervalo2[1]+"}");
-                }else if(intervalo2[0] < intervalo[0]){
-                    System.out.println("Puntos en común {"+intervalo[0]+", "+intervalo2[1]+"}");
-                }else if(intervalo2[1] <= intervalo[1]){
-                    System.out.println("Puntos en común {"+intervalo2[0]+", "+intervalo2[1]+"}");
-                }
+    /**
+     * Devuelve un Intervalo resultado de la diferencia del Intervalo base con el <code>intervalo</code>
+     * pasado por parámetro.
+     * @param intervalo Intervalo a unir.
+     * @return Intervalo resultado de la diferencia del Intervalo base con el <code>intervalo</code>
+     *         pasado por parámetro.
+     */
+    public Intervalo diferencia(Intervalo intervalo) {
+        if(this.intersecta(intervalo) &&
+                !(this.incluye(intervalo) || intervalo.incluye(this))){
+            Intervalo diferencia;
+            if (this.incluye(intervalo.extremoInferior)) {
+                diferencia = new Intervalo(this.extremoInferior, intervalo.extremoInferior);
+            } else {
+                diferencia = new Intervalo(intervalo.extremoSuperior, this.extremoSuperior);
             }
+            return diferencia;
         }
+        return null;
     }
 
-    public boolean comprobarNumero(double numero){
-        return numero<=intervalo[1] && numero>=intervalo[0];
+    /**
+     * Escala el Intervalo base con el <code>factor</code> pasado por parámetro.
+     * @param factor Factor del escalado.
+     */
+    public void escalar(double factor){
+        factor = (factor>=0)? factor : 1/Math.abs(factor);
+        double ampliacion = (this.longitud()*factor)/2;
+        double puntoMedio = this.puntoMedio();
+        this.extremoSuperior = puntoMedio+ampliacion;
+        this.extremoInferior = puntoMedio-ampliacion;
     }
 
-    public void comprobarIncluido(double[] intervalo2){
-        if (intervalo2[0] > intervalo2[1]){
-            System.out.println("Intervalo NO válido");
-        }else{
-            if (intervalo2[0] > intervalo[1]){
-                System.out.println("Estos intervalos no tienen puntos en común");
-            }else{
-                if (intervalo2[0] < intervalo[0] || intervalo2[1] > intervalo[1]){
-                    System.out.println("No está incluido en el Intervalo");
-                }else if(intervalo2[0] < intervalo[1] && intervalo2[0]>intervalo[0] && intervalo2[1] <= intervalo[1]){
-                    System.out.println("Está incluido en el Intervalo");
-                }else if(intervalo2[0] >= intervalo[0] && intervalo2[1] <= intervalo[1]){
-                    System.out.println("Está incluido en el Intervalo");
-                }else{
-                    System.out.println("No está incluido en el Intervalo");
-                }
-            }
-        }
+    /**
+     * Devuelve una copia del Intervalo base escalado con el <code>factor</code> pasado por parámetro.
+     * @param factor Factor del escalado.
+     * @return Intervalo resultado de escalar el Intervalo base con el <code>factor</code>
+     *         pasado por parámetro.
+     */
+    public Intervalo escalado(double factor){
+        Intervalo escalado = this.copia();
+        escalado.escalar(factor);
+        return escalado;
     }
 
-    public double puntoMedio(double[] intervalo){
-        return intervalo[0]+(longuitud()/2);
+    /**
+     * Devuelve un nuevo Intervalo con los extremos superior e inferior del Intervalo base.
+     * @return Nuevo Intervalo con los mismos extremos que el Intervalo base.
+     */
+    public Intervalo copia() {
+        // return new Intervalo(this.extremoInferior, this.extremoSuperior);
+        return new Intervalo(this);
     }
 
-    public boolean anterior(double[] intervalo2){
-        return this.intervalo[0] > intervalo2[1] ;
+    /**
+     * Indica si el Intervalo es igual al <code>intervalo</code> pasado por parámetro.<p>
+     * <b>Nota: </b>Dos intervalos son iguales si lo son sus extremos.<br>
+     * Casos especiales:<ul>
+     *     <li>Si el <code>intervalo</code> proporcionado como parámetro es nulo se devuelve <code>false</code>.</li>
+     * </ul>
+     * @param intervalo Intervalo a comparar.
+     * @return Indica si el Intervalo es igual al <code>intervalo</code> pasado por parámetro.
+     */
+    public boolean iguales(Intervalo intervalo){
+        return this.extremoInferior == intervalo.extremoInferior &&
+                this.extremoSuperior == intervalo.extremoSuperior;
     }
 
-    public Intervalo intersectan(double[] intervalo2){
-        Intervalo res = null;
-        if (intervalo2[0] > intervalo2[1]){
-            System.out.println("Intervalo NO válido");
-        }else{
-            if (intervalo2[0] > intervalo[1]){
-                System.out.println("Estos intervalos no tienen puntos en común");
-            }else{
-                double[] a = new double[2];
-                if (intervalo2[0] <= intervalo[0] && intervalo2[1] >= intervalo[1]){
-                    a[0] = intervalo[0];
-                    a[1] = intervalo[1];
-                    res = new Intervalo(a);
-                }else if(intervalo2[0] < intervalo[1] && intervalo2[0]>intervalo[0] && intervalo2[1] >= intervalo[1]){
-                    a[0] = intervalo2[0];
-                    a[1] = intervalo[1];
-                    res = new Intervalo(a);
-                }else if(intervalo2[0] < intervalo[0]){
-                    a[0] = intervalo[0];
-                    a[1] = intervalo2[1];
-                    res = new Intervalo(a);
-                }else if(intervalo2[1] <= intervalo[1]){
-                    a[0] = intervalo2[0];
-                    a[1] = intervalo2[1];
-                    res = new Intervalo(a);
-                }
-            }
-        }
-        return res;
+
+    /**
+     * Genera una representación como cadena del Intervalo.
+     * @return Cadena con información de los extremos del Intervalo.
+     */
+    @Override
+    public String toString() {
+        return  this.getClass().getName() + " ["+
+                this.extremoInferior + ", " +
+                this.extremoSuperior +"]";
     }
 
-    public Intervalo noIntersectan(double[] intervalo2){
-        Intervalo res = null;
-        if (intervalo2[0] > intervalo2[1]){
-            System.out.println("Intervalo NO válido");
-        }else{
-            if (intervalo2[0] > intervalo[1]){
-                return new Intervalo(new double[]{intervalo[1],intervalo2[0]});
-            }else if(intervalo[0] > intervalo2[1]){
-                return new Intervalo(new double[]{intervalo2[1], intervalo[0]});
-            }else{
-                System.out.println("Estos intervalos tienen puntos en común");
-            }
-        }
-        return res;
-    }
-
-    public Intervalo desplazarSinCambio(double num){
-        return new Intervalo(new double[]{this.intervalo[0]+num,this.intervalo[1]+num});
-    }
-
-    public Intervalo escalarSinCambio(double num){
-        double a = (longuitud()*num/2);
-        double b = puntoMedio(intervalo);
-        return new Intervalo(new double[]{puntoMedio(intervalo)-a,puntoMedio(intervalo)+a});
+    /**
+     * Genera una representación como cadena del Intervalo.
+     * @return Cadena con información del Intervalo: extremos, longitud y punto medio.
+     */
+    public String info(){
+        return this + " long.:" + this.longitud() + " p.medio:" + this.puntoMedio();
     }
 }
