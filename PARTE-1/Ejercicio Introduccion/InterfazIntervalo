@@ -1,0 +1,125 @@
+package Intervalo;
+/**
+ * Interfaz de los objetos Intervalo compuestos por dos elementos un extremo inferior
+ * y un extremo superior.
+ * @author POO
+ * @version 29/09/2022
+ */
+public interface InterfazIntervalo {
+    /**
+     * Calcula la longitud del Intervalo como la diferencia entre sus extremos.
+     * @return Longitud del Intervalo, como un valor <code>double</code>.
+     */
+    double longitud();
+    /**
+     * Calcula el punto medio del Intervalo.
+     * @return Devuelve el punto medio del Intervalo, como un valor <code>double</code>.
+     */
+    double puntoMedio();
+    /**
+     * Indica si el Intervalo base es anterior al <code>intervalo</code> proporcionado como parámetro.<p>
+     * <b>Nota: </b>El Intervalo base se considera anterior al <code>intervalo</code> pasado por parámetro si su
+     * extremo superior es menor o igual al extremo inferior del <code>intervalo</code> pasado por parámetro.<br>
+     * @param intervalo Intervalo con el que comprobar la condición.
+     * @return <code>true</code> si el Intervalo base es anterior al dado,
+     *         <code>false</code> en cualquier otro caso.
+     */
+    boolean anterior(Intervalo intervalo);
+    /**
+     * Indica si el Intervalo base es posterior al <code>intervalo</code> proporcionado como parámetro.<p>
+     * <b>Nota: </b>El Intervalo base se considera posterior al <code>intervalo</code> pasado por parámetro si su
+     * extremo interior es mayor o igual al extremo superior del <code>intervalo</code> pasado por parámetro.<br>
+     * @param intervalo Intervalo con el que comprobar la condición.
+     * @return <code>true</code> si el Intervalo base es posterior al dado,
+     *         <code>false</code> en caso contrario.
+     */
+    boolean posterior(Intervalo intervalo);
+    /**
+     * Indica si el Intervalo base incluye al <code>punto</code> proporcionado como parámetro.
+     * @param punto Punto a comprobar.
+     * @return <code>true</code> si el Intervalo base incluye al <code>punto</code> proporcionado
+     *         como parámetro,<code>false</code> en caso contrario.
+     */
+    boolean incluye(double punto);
+    /**
+     * Indica si el Intervalo base incluye al <code>intervalo</code> proporcionado como parámetro.
+     * @param intervalo Intervalo con el que comprobar la condición.
+     * @return <code>true</code> si el Intervalo base incluye al <code>intervalo</code> proporcionado
+     *         como parámetro, <code>false</code> en cualquier otro caso.
+     */
+    boolean incluye(Intervalo intervalo);
+    /**
+     * Indica si el Intervalo base intersecta con el <code>intervalo</code> proporcionado como parámetro.
+     * @param intervalo Intervalo con el que comprobar la condición.
+     * @return <code>true</code> si el Intervalo base intersecta con el <code>intervalo</code>
+     *         proporcionado como parámetro, <code>false</code> en caso contrario.
+     */
+    boolean intersecta(Intervalo intervalo);
+    /**
+     * Devuelve un Intervalo resultado de la intersección del Intervalo base
+     * con el <code>intervalo</code> pasado por parámetro.
+     * @param intervalo Intervalo con el que operar.
+     * @return Intervalo resultado de la intersección con el <code>intervalo</code> pasado
+     *         por parámetro.
+     */
+    Intervalo interseccion(Intervalo intervalo);
+    /**
+     * Desplaza el Intervalo base el <code>desplazamiento</code> dado.
+     * @param desplazamiento valor del <code>desplazamiento</code> a realizar.
+     */
+    void desplazar(double desplazamiento);
+    /**
+     * Devuelve una copia del Intervalo base desplazado el <code>desplazamiento</code> pasado por parámetro.
+     * @param desplazamiento valor del <code>desplazamiento</code> a realizar
+     * @return Intervalo desplazado el <code>desplazamiento</code> dado respecto al Intervalo base.
+     */
+    Intervalo desplazado(double desplazamiento);
+    /**
+     * Devuelve un Intervalo resultado de la unión del Intervalo base con el <code>intervalo</code>
+     * pasado por parámetro.
+     * @param intervalo Intervalo a unir.
+     * @return Intervalo resultado de la unión del Intervalo base con el <code>intervalo</code>
+     *         pasado por parámetro.
+     */
+    Intervalo union(Intervalo intervalo);
+    /**
+     * Devuelve un Intervalo resultado de la diferencia del Intervalo base con el <code>intervalo</code>
+     * pasado por parámetro.
+     * @param intervalo Intervalo a unir.
+     * @return Intervalo resultado de la diferencia del Intervalo base con el <code>intervalo</code>
+     *         pasado por parámetro.
+     */
+    Intervalo diferencia(Intervalo intervalo);
+    /**
+     * Escala el Intervalo base con el <code>factor</code> pasado por parámetro.
+     * @param factor Factor del escalado.
+     */
+    void escalar(double factor);
+    /**
+     * Devuelve una copia del Intervalo base escalado con el <code>factor</code> pasado por parámetro.
+     * @param factor Factor del escalado.
+     * @return Intervalo resultado de escalar el Intervalo base con el <code>factor</code>
+     *         pasado por parámetro.
+     */
+    Intervalo escalado(double factor);
+    /**
+     * Devuelve un nuevo Intervalo con los extremos superior e inferior del Intervalo base.
+     * @return Nuevo Intervalo con los mismos extremos que el Intervalo base.
+     */
+    Intervalo copia();
+    /**
+     * Indica si el Intervalo es igual al <code>intervalo</code> pasado por parámetro.<p>
+     * <b>Nota: </b>Dos intervalos son iguales si lo son sus extremos.<br>
+     * Casos especiales:<ul>
+     *     <li>Si el <code>intervalo</code> proporcionado como parámetro es nulo se devuelve <code>false</code>.</li>
+     * </ul>
+     * @param intervalo Intervalo a comparar.
+     * @return Indica si el Intervalo es igual al <code>intervalo</code> pasado por parámetro.
+     */
+    boolean iguales(Intervalo intervalo);
+    /**
+     * Genera una representación como cadena del Intervalo.
+     * @return Cadena con información del Intervalo: extremos, longitud y punto medio.
+     */
+    String info();
+}
