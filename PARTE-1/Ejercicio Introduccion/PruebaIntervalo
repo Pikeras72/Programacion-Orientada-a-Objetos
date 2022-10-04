@@ -118,6 +118,8 @@ public class PruebaIntervalo {
         System.out.println(i7+" diferencia "+i2+" -> "+i7.diferencia(i2));
         System.out.println(i8+" diferencia "+i7+" -> "+i8.diferencia(i7));
         System.out.println();
+        Intervalo3P a = new Intervalo3P(3,8,4);
+        System.out.println(a.desplazado(4).toString());
 
     }
 
