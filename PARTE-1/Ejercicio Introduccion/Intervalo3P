@@ -2,8 +2,6 @@ package Intervalo;
 //Y LOS METODOS SOBRANTES?
 public class Intervalo3P extends Intervalo{
 
-    private double extremoInferior;
-    private double extremoSuperior;
     private double puntoIntermedio;
 
     protected static final double ORIGEN = 0.0;
@@ -12,177 +10,82 @@ public class Intervalo3P extends Intervalo{
     //POR QUE DA ERROR SI NO HAGO OTROS CONSTRUCTORES
 
     public Intervalo3P(){
-        this(Intervalo3P.ORIGEN,Intervalo3P.ORIGEN,Intervalo3P.ORIGEN);
+        super();
+        this.puntoIntermedio = ORIGEN;
     }
 
     public Intervalo3P(double extremo){
-        this.extremoSuperior = Math.max(extremo, ORIGEN);
-        this.extremoInferior = Math.min(extremo, ORIGEN);
-        this.puntoIntermedio = this.puntoMedio();
+        super(extremo);
+        this.puntoIntermedio = puntoMedio();
+        //this(ORIGEN, extremo);
     }
 
     public Intervalo3P(double extremoInferior, double extremoSuperior){
-        this.extremoInferior = Math.min(extremoInferior, extremoSuperior);
-        this.extremoSuperior = Math.max(extremoInferior, extremoSuperior);
+        super(extremoInferior,extremoSuperior);
         this.puntoIntermedio = this.puntoMedio();
     }
 
     public Intervalo3P(double extremoInferior, double extremoSuperior, double puntoIntermedio){
-        this.extremoInferior = Math.min(extremoInferior, extremoSuperior);
-        this.extremoSuperior = Math.max(extremoInferior, extremoSuperior);
+        super(extremoInferior, extremoSuperior);
         this.puntoIntermedio = puntoIntermedio;
     }
 
     public Intervalo3P(Intervalo intervalo) {
-        //this();//DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD
-        //PORQ ME DICE QUE PUNTOIINTERMEDIO NO PUEDE SER FINAL SIN EL EXTENDS INTERVALO
-        if (intervalo != null) {
-            this.extremoInferior = intervalo.getExtremoInferior();
-            this.extremoSuperior = intervalo.getExtremoSuperior();
-            this.puntoIntermedio = intervalo.puntoMedio();
-        }
+        super(intervalo);
+        puntoIntermedio = intervalo.puntoMedio();
     }
 
     public Intervalo3P(Intervalo3P intervalo) {
-        if (intervalo != null) {
-            this.extremoInferior = intervalo.extremoInferior;
-            this.extremoSuperior = intervalo.extremoSuperior;
-            this.puntoIntermedio = intervalo.puntoMedio();
-        }
+        super(intervalo);
+        puntoIntermedio = intervalo.getPuntoIntermedio();
     }
 
-    public Intervalo3P(Intervalo3P intervalo, double puntoIntermedio) {
-        if (intervalo != null) {
-            this.extremoInferior = intervalo.extremoInferior;
-            this.extremoSuperior = intervalo.extremoSuperior;
-            this.puntoIntermedio = puntoIntermedio;
-        }
-    }
-
-    @Override
-    public double longitud() {
-        return this.extremoSuperior - this.extremoInferior;
-    }
-
-    @Override
-    public double puntoMedio() {
-        return this.extremoInferior + this.longitud()/2;
-    }
-
-    @Override
-    public boolean incluye(double punto) {
-        return false;
+    public Intervalo3P(Intervalo intervalo, double puntoIntermedio) {
+        super(intervalo);
+        this.puntoIntermedio = puntoIntermedio;
     }
 
     @Override
     public void desplazar(double desplazamiento) {
-        this.extremoInferior += desplazamiento;
-        this.extremoSuperior += desplazamiento;
-        this.puntoIntermedio += desplazamiento;
+        super.desplazar(desplazamiento);
+        this.puntoIntermedio +=desplazamiento;
     }
 
     @Override
-    public Intervalo desplazado(double desplazamiento) {
-        Intervalo desplazado = this.copia();
-        desplazado.desplazar(desplazamiento);
-        return desplazado;
+    public Intervalo3P desplazado(double desplazamiento) {
+        Intervalo aux = super.desplazado(desplazamiento);
+        return new Intervalo3P(aux,puntoIntermedio+desplazamiento);
     }
-
-    @Override
-    public void escalar(double factor) {
-        factor = (factor>=0)? factor : 1/Math.abs(factor);
-        double ampliacion = (this.longitud()*factor)/2;
-        double puntoMedio = this.puntoMedio();
-        this.extremoSuperior = puntoMedio+ampliacion;
-        this.extremoInferior = puntoMedio-ampliacion;
+    
+    public void escalar(double factor){
+        super.escalar(factor);
+        this.puntoIntermedio = 
     }
-
-    @Override
-    public Intervalo escalado(double factor) {
-        Intervalo escalado = this.copia();
+    
+    public Intervalo3P escalado ( double factor){
+        Intervalo3P escalado = this.copia();
         escalado.escalar(factor);
         return escalado;
     }
 
-    @Override
-
-    public Intervalo copia() {
-        return new Intervalo3P(this);
-    }
-
-    @Override
-    public String info() {
-        return this + " long.:" + this.longitud() + " p.medio:" + this.puntoMedio();
-    }
-
-    @Override
-    public boolean iguales(Intervalo intervalo) {
-        return false;
-    }
-
-    public boolean iguales(Intervalo3P intervalo) {
-        return this.extremoInferior == intervalo.extremoInferior &&
-                this.extremoSuperior == intervalo.extremoSuperior &&
-                this.puntoIntermedio == intervalo.puntoIntermedio;
-    }
-
-    @Override
-    public Intervalo diferencia(Intervalo intervalo) {
+    public Intervalo3P union(Intervalo intervalo){
         return null;
     }
 
     @Override
-    public Intervalo3P union(Intervalo intervalo) {
-        if(this.intersecta(intervalo)){
-            double extremoInferior = Math.min(this.extremoInferior, intervalo.getExtremoInferior());
-            double extremoSuperior = Math.max(this.extremoSuperior, intervalo.getExtremoSuperior());
-            return new Intervalo3P(extremoInferior, extremoSuperior, this.puntoIntermedio);
-        } else {
-            return null;
+    public String toString() {
+        return super.toString().replace(",", ", "+this.puntoIntermedio+",");
+    }
+
+    private void setPuntoIntermedio(double valor){
+        if(this.incluye(valor)){
+            puntoIntermedio = valor;
+        }else{
+            puntoIntermedio = ORIGEN;
         }
-    }
-
-    @Override
-    public Intervalo interseccion(Intervalo intervalo) {
-        return null;
-    }
-
-    @Override
-    public boolean intersecta(Intervalo intervalo) {
-        return false;
-    }
-
-    @Override
-    public boolean incluye(Intervalo intervalo) {
-        return false;
-    }
-
-    @Override
-    public boolean posterior(Intervalo intervalo) {
-        return false;
-    }
-
-    @Override
-    public boolean anterior(Intervalo intervalo) {
-        return false;
     }
 
     public double getPuntoIntermedio() {
         return puntoIntermedio;
-    }
-
-    protected Intervalo getIntervaloAnterior(){
-        return new Intervalo(this.extremoInferior,this.puntoIntermedio);
-    }
-
-    protected Intervalo getIntervaloPosterior(){
-        return new Intervalo(this.puntoIntermedio,this.extremoSuperior);
-    }
-
-    public String toString() {
-        return  this.getClass().getName() + " ["+
-                this.extremoInferior + ", " +
-                this.extremoSuperior +"]" + "( " +
-                this.puntoIntermedio +" )";
     }
 }
