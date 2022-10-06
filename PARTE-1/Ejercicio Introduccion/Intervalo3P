@@ -1,91 +1,246 @@
 package Intervalo;
-//Y LOS METODOS SOBRANTES?
-public class Intervalo3P extends Intervalo{
 
+/**
+ * Esta clase define objetos Intervalo compuestos por tres elementos un extremo inferior,
+ * un extremo superior y un punto intermedio.<p>
+ * <b>Nota: </b>No se debe confundir el punto intermedio con el punto medio del intervalo.
+ * Todos los valores son de tipo <code>double</code>.
+ * @author POO
+ * @version 04/10/2022
+ */
+public class Intervalo3P extends Intervalo {
+    /**
+     * Punto intermedio del Intervalo.
+     */
     private double puntoIntermedio;
 
-    protected static final double ORIGEN = 0.0;
-
-    //DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD
-    //POR QUE DA ERROR SI NO HAGO OTROS CONSTRUCTORES
-
-    public Intervalo3P(){
-        super();
-        this.puntoIntermedio = ORIGEN;
+    /**
+     * Construye un Intervalo3P en el origen de coordenadas [0.0, 0.0, 0.0]
+     */
+    public Intervalo3P() {
+        // llamada implícita al constructor vacío de la clase padre
+        // super();
+        this.puntoIntermedio = ORIGEN;  //Intervalo.ORIGEN
     }
 
-    public Intervalo3P(double extremo){
-        super(extremo);
-        this.puntoIntermedio = puntoMedio();
-        //this(ORIGEN, extremo);
-    }
-
-    public Intervalo3P(double extremoInferior, double extremoSuperior){
-        super(extremoInferior,extremoSuperior);
-        this.puntoIntermedio = this.puntoMedio();
-    }
-
-    public Intervalo3P(double extremoInferior, double extremoSuperior, double puntoIntermedio){
+    /**
+     * Construye un Intervalo3P con los extremos indicados ordenados de menor a mayor y
+     * con punto intermedio en el punto medio del Intervalo3P creado.
+     * @param extremoSuperior Extremo superior del intervalo3P.
+     * @param extremoInferior Extremo inferior del intervalo3P.
+     */
+    public Intervalo3P(double extremoInferior, double extremoSuperior) {
         super(extremoInferior, extremoSuperior);
-        this.puntoIntermedio = puntoIntermedio;
+        puntoIntermedio = this.puntoMedio();
     }
 
+    /**
+     * Construye un Intervalo3P con los extremos indicados ordenados de menor a mayor, con punto intermedio
+     * en el <code>puntoIntermedio</code> proporcionado como parámetro.
+     * <b>Nota: </b>El punto intermedio debe estar en el <code>intervalo</code>, en caso contrario
+     * se sustituye por el punto medio del mismo.
+     * @param extremoSuperior Extremo superior del intervalo3P.
+     * @param extremoInferior Extremo inferior del intervalo3P.
+     * @param puntoIntermedio Punto intermedio del intervalo3P.
+     */
+    public Intervalo3P(double extremoInferior, double extremoSuperior, double puntoIntermedio) {
+        super(extremoInferior, extremoSuperior);
+        setPuntoIntermedio(puntoIntermedio);
+    }
+
+    /**
+     * Construye un Intervalo3P en función del <code>extremo</code> proporcionado: [0.0, extremo] o [extremo, 0.0] y
+     * con punto intermedio en el punto medio del Intervalo3P a construir.
+     * @param extremo Extremo proporcionado.
+     * @see #Intervalo3P(double, double)
+     */
+    public Intervalo3P(double extremo) {
+        // super(extremo);
+        // puntoIntermedio = this.puntoMedio();
+        this(ORIGEN, extremo);
+    }
+
+    /**
+     * Construye un Intervalo3P a partir del <code>intervalo</code> proporcionado como parámetro,
+     * con punto intermedio en el punto medio del Intervalo3P a construir.
+     * @param intervalo Intervalo base.
+     */
     public Intervalo3P(Intervalo intervalo) {
         super(intervalo);
-        puntoIntermedio = intervalo.puntoMedio();
+        puntoIntermedio = puntoMedio();
     }
 
+    /**
+     * Construye un Intervalo3P a partir del <code>intervalo</code> proporcionado como parámetro.
+     * @param intervalo Intervalo base.
+     */
     public Intervalo3P(Intervalo3P intervalo) {
+        // super(intervalo.getExtremoInferior(), intervalo.getExtremoSuperior());
         super(intervalo);
-        puntoIntermedio = intervalo.getPuntoIntermedio();
+        puntoIntermedio = intervalo.puntoIntermedio;
     }
 
+    /**
+     * Construye un Intervalo3P a partir del <code>intervalo</code> y el punto intermedio en el
+     * <code>puntoIntermedio</code> proporcionados como parámetros.
+     * <b>Nota: </b>El punto intermedio debe estar en el <code>intervalo</code>, en caso contrario
+     * se sustituye por el punto medio del mismo.
+     * @param intervalo Intervalo base del Intervalo3P a crear.
+     * @param puntoIntermedio Punto intermedio del Intervalo3P a crear.
+     */
     public Intervalo3P(Intervalo intervalo, double puntoIntermedio) {
         super(intervalo);
-        this.puntoIntermedio = puntoIntermedio;
+        setPuntoIntermedio(puntoIntermedio);
     }
 
+    /**
+     * Devuelve el punto intermedio del Intervalo3P base.
+     * @return Punto intermedio de intervalo3P base.
+     */
+    protected double getPuntoIntermedio() {
+        return puntoIntermedio;
+    }
+
+    /**
+     * Fija el valor del punto intermedio del Intervalo3P base.
+     * <b>Nota: </b>El punto intermedio debe estar en el Intervalo3P base, en caso contrario
+     * se sustituye por el punto medio del mismo.
+     * @param valor Nuevo valor para el punto intermedio del Intervalo3P base.
+     */
+    private void setPuntoIntermedio(double valor) {
+        if(this.incluye(valor)){
+            puntoIntermedio = valor;
+        } else {
+            puntoIntermedio = puntoMedio();
+        }
+    }
+
+    /**
+     * Devuelve un Intervalo3P resultado de la unión del Intervalo3P base con el <code>intervalo</code>
+     * pasado por parámetro.
+     * @return Intervalo3P resultado de la unión del Intervalo base con el <code>intervalo</code>
+     *         pasado por parámetro, con punto intermedio en el punto intermedio del Intervalo3P base.
+     */
+    public Intervalo3P union(Intervalo intervalo) {
+        if(this.intersecta(intervalo)){
+            Intervalo aux = this.interseccion(intervalo);
+            return new Intervalo3P(aux, this.puntoIntermedio);
+        }
+        return null;
+    }
+
+    /**
+     * Desplaza el Intervalo3P base el <code>desplazamiento</code> dado.<p>
+     * <b>Nota: </b>El punto intermedio del Intervalo3P también es desplazado.
+     * @param desplazamiento valor del <code>desplazamiento</code> a realizar.
+     */
     @Override
-    public void desplazar(double desplazamiento) {
+    public void desplazar(double desplazamiento){
         super.desplazar(desplazamiento);
-        this.puntoIntermedio +=desplazamiento;
+        puntoIntermedio += desplazamiento;
     }
 
+    /**
+     * Devuelve una copia del Intervalo3P base desplazado el <code>desplazamiento</code> pasado por parámetro.<p>
+     * <b>Nota: </b>El punto intermedio del Intervalo3P también es desplazado.
+     * @param desplazamiento valor del <code>desplazamiento</code> a realizar
+     * @return Intervalo3P desplazado el <code>desplazamiento</code> dado respecto al Intervalo base.
+     */
     @Override
     public Intervalo3P desplazado(double desplazamiento) {
-        Intervalo aux = super.desplazado(desplazamiento);
-        return new Intervalo3P(aux,puntoIntermedio+desplazamiento);
+        Intervalo3P desplazado = this.copia();
+        desplazado.desplazar(desplazamiento);
+        return desplazado;
     }
-    
+
+    /**
+     * Escala el Intervalo3P base con el <code>factor</code> pasado por parámetro.
+     * <b>Nota: </b>El punto intermedio del Intervalo3P permanece fijo.
+     * @param factor Factor del escalado.
+     */
     public void escalar(double factor){
         super.escalar(factor);
-        this.puntoIntermedio = 
     }
-    
-    public Intervalo3P escalado ( double factor){
+
+    /**
+     * Devuelve una copia del Intervalo3P base escalado con el <code>factor</code> pasado por parámetro.<p>
+     * <b>Nota: </b>El punto intermedio de la copia del Intervalo base permanece fijo.
+     * @param factor Factor del escalado.
+     * @return Intervalo resultado de escalar el Intervalo base con el <code>factor</code>
+     *         pasado por parámetro.
+     */
+    @Override
+    public Intervalo3P escalado(double factor) {
         Intervalo3P escalado = this.copia();
         escalado.escalar(factor);
         return escalado;
     }
 
-    public Intervalo3P union(Intervalo intervalo){
-        return null;
-    }
-
+    /**
+     * Devuelve un nuevo Intervalo3P con los extremos superior e inferior y punto intermedio del Intervalo3P base.
+     * @return Nuevo Intervalo3P con los mismos extremos y punto intermedio del Intervalo3P base.
+     */
     @Override
-    public String toString() {
-        return super.toString().replace(",", ", "+this.puntoIntermedio+",");
+    public Intervalo3P copia() {
+        return new Intervalo3P(this);
     }
 
-    private void setPuntoIntermedio(double valor){
-        if(this.incluye(valor)){
-            puntoIntermedio = valor;
+    /**
+     * Devuelve un nuevo Intervalo con el extremo inferior y punto intermedio del Intervalo3P base.
+     * @return Nuevo Intervalo con el extremo inferior y punto intermedio del Intervalo3P base.
+     */
+    protected Intervalo getIntervaloAnterior(){
+        return new Intervalo(this.getExtremoInferior(),this.puntoIntermedio);
+    }
+
+    /**
+     * Devuelve un nuevo Intervalo con el punto intermedio y el extremo superior del Intervalo3P base.
+     * @return Nuevo Intervalo con el punto intermedio y el extremo superior del Intervalo3P base.
+     */
+    protected Intervalo getIntervaloPosterior(){
+        return new Intervalo(this.puntoIntermedio, this.getExtremoSuperior());
+    }
+
+    /**
+     * Indica si el Intervalo3P es igual al <code>intervalo</code> pasado por parámetro.<p>
+     * <b>Nota: </b>Dos intervalos 3P son iguales si lo son sus extremos y sus puntos intermedios.<br>
+     * Casos especiales:<ul>
+     *     <li>Si el <code>intervalo</code> proporcionado como parámetro es nulo se devuelve <code>false</code>.</li>
+     * </ul>
+     * @param intervalo Intervalo3P a comparar.
+     * @return Indica si el Intervalo es igual al <code>intervalo</code> pasado por parámetro.
+     */
+    public boolean iguales(Intervalo3P intervalo) {
+        if(intervalo != null){
+            return intervalo.puntoIntermedio == this.puntoIntermedio && intervalo.getExtremoInferior() == this.getExtremoInferior() && intervalo.getExtremoSuperior() == this.getExtremoSuperior();
         }else{
-            puntoIntermedio = ORIGEN;
+            return false;
         }
     }
 
-    public double getPuntoIntermedio() {
-        return puntoIntermedio;
+    /**
+     * Genera una representación como cadena del Intervalo3P.
+     * @return Cadena con información de los extremos y punto intermedio del Intervalo3P.
+     */
+    @Override
+    public String toString() {
+/*
+        return  this.getClass().getName() + " ["+
+                this.getExtremoInferior() + ", " +
+                this.puntoIntermedio + ", " +
+                this.getExtremoSuperior() +"]";
+        return super.toString()+" pi:"+this.puntoIntermedio;
+*/
+        return super.toString().
+                replaceFirst(",", ", "+puntoIntermedio +",");
+    }
+
+    /**
+     * Genera una representación como cadena del Intervalo3P.
+     * @return Cadena con información del Intervalo: extremos, punto intermedio, longitud y punto medio.
+     */
+    @Override
+    public String info() {
+        return super.info() + "punto Intermedio: "+this.puntoIntermedio;
     }
 }
