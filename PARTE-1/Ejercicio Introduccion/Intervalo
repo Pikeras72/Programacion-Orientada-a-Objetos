@@ -19,7 +19,6 @@ public class Intervalo implements InterfazIntervalo {
     /**
      * Construye un Intervalo en el origen de coordenadas [0.0, 0.0].
      */
-    //DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD
     public Intervalo(){
         this(Intervalo.ORIGEN, Intervalo.ORIGEN);
     }
@@ -48,7 +47,7 @@ public class Intervalo implements InterfazIntervalo {
      * @param intervalo Intervalo base.
      */
     public Intervalo(Intervalo intervalo) {
-        this(); //DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD
+        this();
         if (intervalo != null) {
             this.extremoInferior = intervalo.extremoInferior;
             this.extremoSuperior = intervalo.extremoSuperior;
@@ -321,4 +320,5 @@ public class Intervalo implements InterfazIntervalo {
     public String info(){
         return this + " long.:" + this.longitud() + " p.medio:" + this.puntoMedio();
     }
+
 }
