@@ -7,7 +7,4 @@ public abstract class Combustion extends Vehiculo{
         this.cilindrada = cilindrada;
     }
 
-    @Override
-    public abstract double impuesto();
-
 }
